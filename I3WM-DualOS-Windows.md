@@ -6,7 +6,7 @@
 * 이하는 편의를 위해 반말을 사용하겠습니다
 
 # 검증된 환경 목록
-* 
+* 아래에 없는 다른 환경에서 검증을 하셨다면 이슈 날려주시면 정말 감사드리겠습니다
 * CPU : Intel, GPU : NVIDIA, Internet : wifi
 
 # 설치 준비
@@ -190,6 +190,7 @@
    * username 는 아까 추가한 유저의 이름이다
 3. 파일을 연다 `#EDITOR=vim visudo`
 4. 아래쪽의 다음 항목을 #을 지워 주석처리된것을 풀어준다 `# %wheel ALL = (ALL) ALL`
+    * 만약 `# %wheel ALL = (ALL) NOPASSWD: ALL` 을 대신 풀어주면 sudo 명령때마다 비밀번호를 묻지 않는다
 
 ## 부트로더 설치
 * 이 가이드에서는 systemd-boot 를 사용하도록 하겠다
@@ -242,7 +243,8 @@ initrd /initramfs-linux.img
 * 다른 운영체제를 선택하고 d 를 누르면 기본 부팅 운영체제가 바뀌게 됩니다
 * 로그인은 먼저 유저이름을 입력하고 비밀번호를 입력하면 됩니다
 
-## 데스크탑 환경 설치 // 이하는 완성되지 않
+## 데스크탑 환경 설치
+* 추천이라고 써진것은 필수는 아니지만 필자가 사용하는 것입니다
 ### 인터넷 확인
 * 다음의 명령으로 인터넷이 잘 연결 되었는지 확인한다 `$ping -c 2 www.google.com`
 * 만약 연결이 안되었을 경우 다음의 명령들을 사용해 wifi 에 연결할 수 있다
@@ -257,7 +259,7 @@ initrd /initramfs-linux.img
 * 다음의 명령어를 통해 패키지를 의존성 검사 하에 삭제 `$sudo pacman -S package`
     * 위의 package 는 패키지 명이며, package1 package2 와 같이 동시에 여러개를 설치
     
-### yay
+### yay (추천)
 * arch 에는 AUR 이라는 또 다른 패키지 방식이 존재함
 * 이 가이드에서는 AUR 패키지 매니저로 yay 를 사용할것
 1. 우선 git 를 설치합니다 `$sudo pacman -S git`
@@ -268,8 +270,39 @@ initrd /initramfs-linux.img
 4. 사용방법은 pacman 과 동일하다 ex)`yay -S package`
 5. pacman  AUR 의 저장소를 동기화하고 모든 패키지를 업데이트 하는것을 `$yay` 라는 명령하나로 가능
     
+### Reflector(추천)
+* 자동으로 미러를 잡아주는 프로그램이다
+* 설치 `sudo pacman -S reflector`
+* 미러 설정을 자동화 하는 방법 
+    * https://m.blog.naver.com/luoive/221727970858
+    
+### I3wm
+#### 그래픽 드라이버 설치
+* 다음을 참고 https://wiki.archlinux.org/index.php/xorg#Driver_installatio
+* 그래픽 카드 확인 명령어 `lspci -v | grep -A1 -e VGA -e 3D`
+* 그래픽 카드 드라이버 설치 `sudo pacman -S xf86-video-intel`
+    * 자신의 그래픽 카드에 맞는 드라이버와 opengl 을 설치하면 충분할 것이다 proprietary 와 오픈소스중 하나를 고르면 된다
+#### i3 설치
+* 설치 `$pacman -S xorg i3-wm`
+* 엔터 - 윈도키(메타키를 무엇으로 하냐에 달려있음) - 엔터를 하면 기본 설정 파일이 ~/.config/i3/config 에 생긴다
+* 이제 콘솔창을 윈도우키+ 엔터로 열수 있다 
+  `sudo vim ~/.config/i3/config` 로 수정 가능
 
-###microcode
+### font (추천)
+* 원하는 폰트를 설치
+* 이하는 필자가 사용하는 폰트의 목록이다
+    * ttf-nanum (AUR)
+        * i3 설정파일에서 폰트 설정을 찾아 다음으로 바꿔주면 된다 `font pango:nanum 8`
+
+    * ttf-font-awesome (디자인용 폰트)
+
+### tian (추천)
+* 개인적으로 제일 만족스러웠던 한글 입력기 이다
+* 옵션 내에서 왼쪽 alt 키를 한영키로 만들어 줄수 있다
+* 설치 방법은 사이트에 나와있다 https://www.nimfsoft.com/downloads/
+
+###microcode (추천)
+* 안정화 코드
 #### intel
 1. micro code 를 설치합니다 `$sudo pacman -S intel-ucode`
 2. 설정을 변경합니다 `$sudo vim /boot/loader/entries/arch.conf`
@@ -284,10 +317,30 @@ initrd /initramfs-linux.img
 3. 다음 명령어를 입력한다 `$sudo bootctl update`
 4. 재부팅한다 `$reboot`
 
-### I3wm
-xorg-server sddm i3-wm rofi rxvt-unicode
-systemctl enable sddm
+### ly(추천)
+* ly 는 display manager 의 일종으로 부팅시 로그인 화면을 바꾸어 줌
+  * AUR 로 설치 `$ yay -S ly`
+  * 매 부팅마다 실행되게 한다 `$systemctl enable ly`
+    
+### Chrome(선택)
+* google-chrome (AUR)
+  
+### 상단의 파란색 바 없애기(선택)
+* 설정파일에 다음을 추가한다
+```
+default_border none
+default_floating_border normal
+```
+* 여기까지만 해도 사용하는데에 문제는 없을 것이다
+// 이하는 미완성
+### urxvt
+`$sudo pacman -S rxvt-unicode`
 
-엔터
-윈도키 엔터
+### rofi
+`$sudo pacman -S rofi`
+
+### polybar
+`$yay -S polybar`
+
+
 
