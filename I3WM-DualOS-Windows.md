@@ -13,6 +13,10 @@
 ## Windows
 ### Windows 설치
 * 윈도우를 아치보다 먼저 설치하는것을 권장
+### hibernate(최대 절전모드), fast boot(빠른 시작) 끄기
+* 임시파일로 인한 문제를 방지합니다
+* 최대 절전 모드 : 관리자 권한 cmd 에서 `powercfg.exe /hibernate off` 명령어 입력
+* 빠른 시작: https://rootblog.tistory.com/133
 ### 윈도우를 UTC 를 사용하게  설정
 1. regedit 을 열어 다음 경로로 이동한다
     `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation\`
@@ -93,7 +97,7 @@
 
 #### 일반적인 경우
 * esp 파티션 / 윈도우의 그것을 사용
-* root 파티션 / 나머지 용량 / Linux FileSystem / FAT 32
+* root 파티션 / 나머지 용량 / Linux FileSystem / ext 4
 
 
 ## Partition 작업
