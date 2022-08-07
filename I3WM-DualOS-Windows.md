@@ -157,7 +157,7 @@
 
 
 
-##genfstab
+## genfstab
 * 마운트 정보 저장 `#genfstab -U /mnt >> /mnt/etc/fstab`
 
 
@@ -305,7 +305,7 @@ initrd /initramfs-linux.img
 * 옵션 내에서 왼쪽 alt 키를 한영키로 만들어 줄수 있다
 * 설치 방법은 사이트에 나와있다 https://www.nimfsoft.com/downloads/
 
-###microcode (추천)
+### microcode (추천)
 * 안정화 코드
 #### intel
 1. micro code 를 설치합니다 `$sudo pacman -S intel-ucode`
